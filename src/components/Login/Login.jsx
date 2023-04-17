@@ -4,7 +4,7 @@ import { UserContext } from '../AuthenticationProviders/AuthenticationProviders'
 
 const Login = () => {
 
-    const { signIn } = useContext(UserContext);
+    const { signIn, signInWithGoogle } = useContext(UserContext);
 
     const handleLogin = (event) => {
         event.preventDefault();
@@ -15,13 +15,25 @@ const Login = () => {
         console.log(name, email, password);
 
         signIn(email, password)
-        .then(result => {
-            const loggedUser = result.user;
-            console.log(loggedUser);
-        })
-        .catch(error => {
-            console.log(error);
-        })
+            .then(result => {
+                const loggedUser = result.user;
+                console.log(loggedUser);
+                form.reset();
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }
+
+    const handleGoogleSignIn = () => {
+        signInWithGoogle()
+            .then(result => {
+                const loggedUser = result.user;
+                console.log(loggedUser);
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
 
     return (
@@ -58,7 +70,11 @@ const Login = () => {
                         </div>
                         <label className="label">
                             <p>New To EduCare? Please<button className="btn btn-active btn-link"><Link to="/register">Register</Link></button></p>
+
                         </label>
+                        <div className="form-control">
+                            <p><button onClick={handleGoogleSignIn} className="btn btn-primary">Google</button></p>
+                        </div>
                     </form>
                 </div>
             </div>
